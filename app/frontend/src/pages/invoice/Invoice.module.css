@@ -1,0 +1,66 @@
+.invoiceContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+}
+
+.invoiceTopSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.invoiceBottomSection {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.invoiceTitle {
+    font-size: 4rem;
+    font-weight: 600;
+    margin-top: 130px;
+}
+
+@media only screen and (max-width: 800px) {
+    .invoiceTitle {
+        font-size: 3rem;
+        font-weight: 600;
+        margin-top: 0;
+    }
+}
+
+.invoiceQuestionInput {
+    max-width: 800px;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.invoiceAnswerContainer {
+    max-width: 800px;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.invoiceAnalysisPanel {
+    width: 600px;
+    margin-left: 20px;
+}
+
+.invoiceSettingsSeparator {
+    margin-top: 15px;
+}
+
+.settingsButton {
+    align-self: flex-end;
+    margin-right: 20px;
+    margin-top: 20px;
+}

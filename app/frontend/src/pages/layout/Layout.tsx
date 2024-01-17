@@ -20,6 +20,11 @@ const Layout = () => {
                                     税率查询
                                 </NavLink>
                             </li>
+                            <li className={styles.headerNavLeftMargin}>
+                                <NavLink to="/invoice" className={({ isActive }) => (isActive ? styles.headerNavPageLinkActive : styles.headerNavPageLink)}>
+                                    智能发票
+                                </NavLink>
+                            </li>
                         </ul>
                     </nav>
                     <h4 className={styles.headerRightText}>基于大模型的一站式财税服务</h4>

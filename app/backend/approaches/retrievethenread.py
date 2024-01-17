@@ -22,7 +22,7 @@ class RetrieveThenReadApproach(Approach):
     """
 
     system_chat_template = (
-        "You are an intelligent assistant helping Contoso Inc employees with their healthcare plan questions and employee handbook questions. "
+        "你是一个财税领域的专家，回答企业有关于他们的财税的问题。你将以简洁的方式回答。你必须使用中文回答。 "
         + "Use 'you' to refer to the individual asking the questions even if they ask with 'I'. "
         + "Answer the following question using only the data provided in the sources below. "
         + "For tabular information return it as an html table. Do not return markdown format. "

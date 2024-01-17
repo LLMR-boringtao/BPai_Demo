@@ -50,6 +50,10 @@ const router = createHashRouter([
                 element: <Chat />
             },
             {
+                path: "invoice",
+                lazy: () => import("./pages/invoice/Invoice")
+            },
+            {
                 path: "*",
                 lazy: () => import("./pages/NoPage")
             }
