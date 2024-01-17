@@ -1,5 +1,6 @@
- #!/bin/sh
- # https://app-backend-drpvjxoz6oigo.azurewebsites.net/
+#!/bin/sh
+# https://app-backend-drpvjxoz6oigo.azurewebsites.net/
+# https://app-backend-toydp2jhuexdq.azurewebsites.net/
 
  azd env set AZURE_RESOURCE_GROUP
  azd env set AZURE_LOCATION

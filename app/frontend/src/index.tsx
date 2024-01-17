@@ -10,6 +10,7 @@ import "./index.css";
 
 import Layout from "./pages/layout/Layout";
 import Chat from "./pages/chat/Chat";
+import Invoice from "./pages/invoice/Invoice";
 
 var layout;
 if (useLogin) {
@@ -51,7 +52,7 @@ const router = createHashRouter([
             },
             {
                 path: "invoice",
-                lazy: () => import("./pages/invoice/Invoice")
+                element: <Invoice />
             },
             {
                 path: "*",
