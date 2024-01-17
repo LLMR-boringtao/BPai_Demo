@@ -3,7 +3,7 @@ import readNDJSONStream from "ndjson-readablestream";
 
 import styles from "./Invoice.module.css";
 
-import { chatApi, ChatAppResponse, ChatAppResponseOrError, ChatAppRequest, ResponseMessage } from "../../api";
+import { invoiceApi, ChatAppResponse, ChatAppResponseOrError, ChatAppRequest, ResponseMessage } from "../../api";
 import { Answer, AnswerError, AnswerLoading } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
 import { UserChatMessage } from "../../components/UserChatMessage";
@@ -98,7 +98,7 @@ const Invoice = () => {
                 session_state: answers.length ? answers[answers.length - 1][1].choices[0].session_state : null
             };
 
-            const response = await chatApi(request, token);
+            const response = await invoiceApi(request, token);
             if (!response.body) {
                 throw Error("No response body");
             }

@@ -29,6 +29,7 @@ export default defineConfig({
             "/auth_setup": "http://localhost:50505",
             "/ask": "http://localhost:50505",
             "/chat": "http://localhost:50505",
+            "/invoice": "http://localhost:50505",
             "/config": "http://localhost:50505"
         }
     }

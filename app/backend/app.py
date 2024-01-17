@@ -33,6 +33,7 @@ from quart_cors import cors
 
 from approaches.approach import Approach
 from approaches.chatreadretrieveread import ChatReadRetrieveReadApproach
+from approaches.invoicereadretrieveread import InvoiceReadRetrieveReadApproach
 from approaches.chatreadretrievereadvision import ChatReadRetrieveReadVisionApproach
 from approaches.retrievethenread import RetrieveThenReadApproach
 from approaches.retrievethenreadvision import RetrieveThenReadVisionApproach
@@ -44,6 +45,7 @@ CONFIG_ASK_APPROACH = "ask_approach"
 CONFIG_ASK_VISION_APPROACH = "ask_vision_approach"
 CONFIG_CHAT_VISION_APPROACH = "chat_vision_approach"
 CONFIG_CHAT_APPROACH = "chat_approach"
+CONFIG_INVOICE_APPROACH = "invoice_approach"
 CONFIG_BLOB_CONTAINER_CLIENT = "blob_container_client"
 CONFIG_AUTH_CLIENT = "auth_client"
 CONFIG_GPT4V_DEPLOYED = "gpt4v_deployed"
@@ -193,6 +195,38 @@ async def chat():
             return response
     except Exception as error:
         return error_response(error, "/chat")
+    
+@bp.route("/invoice", methods=["POST"])
+async def invoice():
+    if not request.is_json:
+        return jsonify({"error": "request must be json"}), 415
+    request_json = await request.get_json()
+    context = request_json.get("context", {})
+    auth_helper = current_app.config[CONFIG_AUTH_CLIENT]
+    try:
+        context["auth_claims"] = await auth_helper.get_auth_claims_if_enabled(request.headers)
+        use_gpt4v = context.get("overrides", {}).get("use_gpt4v", False)
+        approach: Approach
+        if use_gpt4v and CONFIG_CHAT_VISION_APPROACH in current_app.config:
+            approach = cast(Approach, current_app.config[CONFIG_CHAT_VISION_APPROACH])
+        else:
+            approach = cast(Approach, current_app.config[CONFIG_CHAT_APPROACH])
+
+        result = await approach.run(
+            request_json["messages"],
+            stream=request_json.get("stream", False),
+            context=context,
+            session_state=request_json.get("session_state"),
+        )
+        if isinstance(result, dict):
+            return jsonify(result)
+        else:
+            response = await make_response(format_as_ndjson(result))
+            response.timeout = None  # type: ignore
+            response.mimetype = "application/json-lines"
+            return response
+    except Exception as error:
+        return error_response(error, "/invoice")
 
 
 # Send MSAL.js settings to the client UI
@@ -367,6 +401,20 @@ async def setup_clients():
         )
 
     current_app.config[CONFIG_CHAT_APPROACH] = ChatReadRetrieveReadApproach(
+        search_client=search_client,
+        openai_client=openai_client,
+        auth_helper=auth_helper,
+        chatgpt_model=OPENAI_CHATGPT_MODEL,
+        chatgpt_deployment=AZURE_OPENAI_CHATGPT_DEPLOYMENT,
+        embedding_model=OPENAI_EMB_MODEL,
+        embedding_deployment=AZURE_OPENAI_EMB_DEPLOYMENT,
+        sourcepage_field=KB_FIELDS_SOURCEPAGE,
+        content_field=KB_FIELDS_CONTENT,
+        query_language=AZURE_SEARCH_QUERY_LANGUAGE,
+        query_speller=AZURE_SEARCH_QUERY_SPELLER,
+    )
+
+    current_app.config[CONFIG_INVOICE_APPROACH] = InvoiceReadRetrieveReadApproach(
         search_client=search_client,
         openai_client=openai_client,
         auth_helper=auth_helper,
