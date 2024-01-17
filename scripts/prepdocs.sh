@@ -63,3 +63,4 @@ $searchImagesArg $visionEndpointArg $visionKeyArg $visionKeyVaultkey $visionKeyV
 --formrecognizerservice "$AZURE_FORMRECOGNIZER_SERVICE" --openaimodelname "$AZURE_OPENAI_EMB_MODEL_NAME" \
 $tenantArg --openaihost "$OPENAI_HOST" \
 --openaikey "$OPENAI_API_KEY" -v
+# --removeall
