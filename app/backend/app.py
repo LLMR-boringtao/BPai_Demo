@@ -210,7 +210,7 @@ async def invoice():
         if use_gpt4v and CONFIG_CHAT_VISION_APPROACH in current_app.config:
             approach = cast(Approach, current_app.config[CONFIG_CHAT_VISION_APPROACH])
         else:
-            approach = cast(Approach, current_app.config[CONFIG_CHAT_APPROACH])
+            approach = cast(Approach, current_app.config[CONFIG_INVOICE_APPROACH])
 
         result = await approach.run(
             request_json["messages"],
