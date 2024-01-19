@@ -59,6 +59,7 @@ class InvoiceReadRetrieveReadApproach(ChatApproach):
         For tabular information return it as an html table. Do not return markdown format. 
         Each source has a name followed by colon and the actual information, must always include the source name for each fact you use in the response. Use square brackets to reference the source, for example [info1.txt]. Don't combine sources, list each source separately, for example [info1.txt][info2.pdf]. 
         When the conversation is not about invocing, you can speak friendly and ask clarifying questions.
+        if you receive "确认开票“， you must return "好的，已经为您开票。" with the source [开票模板.pdf].
         {follow_up_questions_prompt}
         {injected_prompt}
         """

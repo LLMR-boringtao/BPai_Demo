@@ -36,7 +36,7 @@ const Invoice = () => {
     const [retrievalMode, setRetrievalMode] = useState<RetrievalMode>(RetrievalMode.Hybrid);
     const [useSemanticRanker, setUseSemanticRanker] = useState<boolean>(true);
     const [shouldStream, setShouldStream] = useState<boolean>(true);
-    const [useSemanticCaptions, setUseSemanticCaptions] = useState<boolean>(true);
+    const [useSemanticCaptions, setUseSemanticCaptions] = useState<boolean>(false);
     const [excludeCategory, setExcludeCategory] = useState<string>("");
     const [useSuggestFollowupQuestions, setUseSuggestFollowupQuestions] = useState<boolean>(true);
     const [vectorFieldList, setVectorFieldList] = useState<VectorFieldOptions[]>([VectorFieldOptions.Embedding]);
@@ -244,6 +244,36 @@ const Invoice = () => {
         setSelectedAnswer(index);
     };
 
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files) {
+            const files = event.target.files;
+            uploadFiles(files);
+        }
+    };
+
+    const uploadFiles = async (files: FileList) => {
+        const formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+            formData.append("files", files[i]);
+        }
+
+        try {
+            const response = await fetch("http://localhost:50505/upload", {
+                method: "POST",
+                body: formData
+                // Add headers if needed
+            });
+
+            if (response.ok) {
+                console.log("Files uploaded successfully");
+            } else {
+                console.log("Error in file upload");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.commandsContainer}>
@@ -317,7 +347,12 @@ const Invoice = () => {
                     )}
 
                     <div className={styles.chatInput}>
-                        <QuestionInput clearOnSend placeholder="请上传开票相关文件。" disabled={isLoading} onSend={question => makeApiRequest(question)} />
+                        <QuestionInput
+                            clearOnSend
+                            placeholder="请上传开票相关文件。比如：0828开票申请表-连江蜂巢"
+                            disabled={isLoading}
+                            onSend={question => makeApiRequest(question)}
+                        />
                     </div>
                 </div>
 
